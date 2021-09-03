@@ -1,2 +1,2 @@
 [mon_infra]
-infra1 ansible_host=192.168.63.130 ansible_connection=ssh cms=wordpress host_name=infra1.risr.local ansible_become_method=su ansible_become_password=Cisco76
+web1 ansible_host=192.168.243.133 ansible_connection=ssh host_name=web1.risr.local ansible_become_method=su ansible_become_password=Cisco76

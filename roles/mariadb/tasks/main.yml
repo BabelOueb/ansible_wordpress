@@ -1,0 +1,19 @@
+---
+
+- name: Install mariadb
+  become: yes
+  apt:
+    name:
+      - mariadb-server
+    state : present
+
+
+- name: Reset root password
+  become: yes
+  ansible.builtin.shell:
+    cmd: mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '{{ passwd_mysql }}';"
+
+- name: Create Database
+  become: yes
+  ansible.builtin.shell:
+    cmd: mysql -u root -p{{ passwd_mysql }} -e "CREATE DATABASE {{ mysql_database }};"

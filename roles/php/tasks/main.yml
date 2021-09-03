@@ -1,0 +1,17 @@
+---
+
+
+- name: Update repositories cache and install php8.1 and php modules
+  become: yes
+  apt:
+    name:
+      - php7.4
+      - php7.4-curl
+      - php7.4-xml
+      - php7.4-common
+      - php-imagick
+      - php7.4-dom
+      - php7.4-mysql
+      - php7.4-zip
+    state : present
+    update_cache: yes

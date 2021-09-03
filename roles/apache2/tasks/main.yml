@@ -1,0 +1,14 @@
+---
+
+- name: Install apache2
+  become: yes
+  apt:
+    name:
+      - apache2
+    state : present
+
+- name: Set up Apache virtuaHost
+  become: yes
+  template:
+    src: "vhosts.conf.j2"
+    dest: "/etc/apache2/sites-available/{{ apache_domain }}.conf"

@@ -1,0 +1,10 @@
+---
+- name: Create a domain directory if not exist
+  become: yes
+  ansible.builtin.file:
+    path: '/var/www/{{apache_domain}}'
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+

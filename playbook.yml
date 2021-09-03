@@ -1,6 +1,12 @@
 ---
-- name: "Ce playbook installe LAMP et Wordpress"
-  hosts: mon_infra
+- name: Ce playbook installe LAMP et Wordpress
+  hosts: web1
+  vars_files:
+    - vars.yml
   roles:
     - role: common
-      # when: cms == "wordpress"
+    - role: apache2
+    - role: mariadb
+    - role: folders
+    - role: wordpress
+    - role: php

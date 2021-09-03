@@ -1,0 +1,59 @@
+---
+
+- name: Download Wordpress
+  become: yes
+  get_url:
+    url: https://fr.wordpress.org/latest-fr_FR.tar.gz
+    dest: /var/www/latest-fr_FR.tar.gz
+    mode: '0440'
+
+- name: Unarchive Wordpress
+  become: yes
+  ansible.builtin.unarchive:
+    src: /var/www/latest-fr_FR.tar.gz
+    dest: '/var/www/{{apache_domain}}'
+    remote_src: yes
+
+- name: Change file ownership, group and permissions
+  become: yes
+  ansible.builtin.file:
+    path: '/var/www/{{apache_domain}}'
+    owner: www-data
+    group: www-data
+    mode: '0755'
+    recurse: yes
+
+- name: Run command for activate vhost
+  become: yes
+  ansible.builtin.shell:
+    cmd: /usr/sbin/a2ensite {{ apache_domain }}
+
+- name: Run command WP-CLI - Step 1
+  become: yes
+  ansible.builtin.shell:
+    cmd: curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+
+- name: Run command WP-CLI - Step 2
+  become: yes
+  copy:
+    src: wp-cli.phar
+    dest: /usr/bin/wp
+    remote_src: yes
+
+- name: Run command WP-CLI - Step 3
+  become: yes
+  ansible.builtin.file:
+    path: /usr/bin/wp
+    owner: root
+    group: root
+    mode: u=rwx,g=r,o=r
+
+- name: Configure Mysql Wordpress
+  become: yes
+  ansible.builtin.shell:
+   cmd: /usr/bin/wp core config --dbname={{mysql_database}} --dbuser={{user_mysql}} --dbpass={{passwd_mysql}} --dbhost=localhost --dbprefix={{prefix_mysql}}
+
+- name: Install Wordpress
+  become: yes
+  ansible.builtin.shell:
+   cmd: /usr/bin/wp core install --url="{{apache_domain}}" --title="{{tire_wordpress}}"" --admin_user="{{user_wordpress}}" --admin_password="{{passwd_wordpress}}" --admin_email="{{email_wordpress}}"

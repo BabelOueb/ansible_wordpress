@@ -1,0 +1,18 @@
+<VirtualHost *:80 >
+ServerName {{ apache_domain }}
+ServerAlias www.{{ apache_domain }}
+DocumentRoot /var/www/{{ apache_domain }}/wordpress
+
+CustomLog /var/log/apache2/vhost.log comonvhost
+ErrorLog /var/log/apache2/error.log
+CustomLog /var/log/apache2/combined.log combined
+CustomLog /var/log/apache2/access.log common
+
+<Directory /var/www/{{ apache_domain }}/wordpress>
+Order Allow,Deny
+Allow from all
+AllowOverride All
+Options -Indexes
+</Directory>
+
+</VirtualHost>

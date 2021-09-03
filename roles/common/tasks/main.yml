@@ -1,5 +1,4 @@
 ---
-
 - name: Update repositories cache and install htop, screen, open-vm-tools package
   become: yes
   apt:
@@ -10,6 +9,12 @@
       - curl
       - net-tools
       - iptables
+      - parted
+      - gnupg
+      - apt-transport-https 
+      - lsb-release 
+      - ca-certificates
+      - wget
+      - php
     state : present
     update_cache: yes
-    cache_valid_time: 3600
